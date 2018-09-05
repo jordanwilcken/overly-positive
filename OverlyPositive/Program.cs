@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,7 +11,11 @@ namespace OverlyPositive
     {
         static void Main(string[] args)
         {
-            Task<IScrapingResult> scrapingTask = Scraper.ScrapeReviews();
+			Task<IScrapingResult> scrapingTask;
+			using (HttpClient httpClient = new HttpClient())
+			{
+				scrapingTask = new Scraper(httpClient).ScrapeReviews();
+			}
 
             HandleTheWaiting(scrapingTask);
 
